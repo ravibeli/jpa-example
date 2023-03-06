@@ -1,7 +1,9 @@
 package com.hr.app.jpaexample.dao;
 
 import com.hr.app.jpaexample.entity.Department;
+import com.hr.app.jpaexample.entity.Department_;
 import com.hr.app.jpaexample.entity.Employee;
+import com.hr.app.jpaexample.entity.Employee_;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
@@ -24,8 +26,8 @@ public class EmployeeSpecifications {
         return new Specification<Employee>() {
             @Override
             public Predicate toPredicate(Root<Employee> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                Join<Employee, Department> departmentJoin = root.join("department", JoinType.INNER);
-                return criteriaBuilder.equal(departmentJoin.get("departmentId"), departmentId);
+                Join<Employee, Department> departmentJoin = root.join(Employee_.DEPARTMENT, JoinType.INNER);
+                return criteriaBuilder.equal(departmentJoin.get(Department_.departmentId), departmentId);
             }
         };
     }
