@@ -1,7 +1,7 @@
 # Simple Spring Boot 3.0.4 JPA Example
 
 ### Instruction
-[I'm an inline-style link](https://www.google.com)
+
 1. [Install JDK 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
 2. [Install Gradle 7.6.1](https://gradle.org/next-steps/?version=7.6.1&format=bin)
 3. [Install git command line tool](https://git-scm.com/downloads)
