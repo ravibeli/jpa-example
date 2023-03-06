@@ -17,10 +17,10 @@
 
 ### API Documentation:
 
-| Entities    | API Title                     | Method   | URL                                  |
-|-------------|-------------------------------|----------|--------------------------------------|
-| Employee    | Get All Employees Details     | GET      | http://localhost:8080/employees      |
-| Employee    | Search Employees By Dept ID   | GET      | http://localhost:8080/employees/20   |
-| Department  | Get All Departments Details   | GET      | http://localhost:8080/departments    |
-| Department  | Get Department By Dept ID     | GET      | http://localhost:8080/departments/20 |
+| Entities    | API Title                     | Method   | URL                                             |
+|-------------|-------------------------------|----------|-------------------------------------------------|
+| Employee    | Get All Employees Details     | GET      | http://localhost:8080/employees                 |
+| Employee    | Search Employees By Dept ID   | GET      | http://localhost:8080/employees/{depatmentId}   |
+| Department  | Get All Departments Details   | GET      | http://localhost:8080/departments               |
+| Department  | Get Department By Dept ID     | GET      | http://localhost:8080/departments/{depatmentId} |
 
