@@ -29,9 +29,15 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.hibernate:hibernate-jpamodelgen:5.6.5.Final'
-	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 	annotationProcessor 'org.hibernate:hibernate-jpamodelgen-jakarta:5.6.15.Final'
+
+	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 	testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+
+	implementation "org.mapstruct:mapstruct:1.5.2.Final"
+	annotationProcessor "org.mapstruct:mapstruct-processor:1.5.2.Final"
+	// If you are using mapstruct in test code
+	testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.5.2.Final"
 }
 
 // attach the generated folder as source for this project
@@ -43,8 +49,19 @@ sourceSets {
 	}
 }
 
+compileJava {
+	options.compilerArgs += [
+			'-Amapstruct.suppressGeneratorTimestamp=true',
+			'-Amapstruct.suppressGeneratorVersionInfoComment=true',
+			'-Amapstruct.verbose=true'
+	]
+}
+
 tasks.withType(JavaCompile) {
-	options.compilerArgs += ['-AaddGenerationDate=true']
+	options.compilerArgs += ['-AaddGenerationDate=true',
+							 '-Amapstruct.suppressGeneratorTimestamp=true',
+							 '-Amapstruct.suppressGeneratorVersionInfoComment=true',
+							 '-Amapstruct.verbose=true']
 }
 
 tasks.named('test') {

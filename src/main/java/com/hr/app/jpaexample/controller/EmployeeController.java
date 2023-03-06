@@ -2,6 +2,7 @@ package com.hr.app.jpaexample.controller;
 
 import com.hr.app.jpaexample.entity.Department;
 import com.hr.app.jpaexample.entity.Employee;
+import com.hr.app.jpaexample.responses.EmployeeDto;
 import com.hr.app.jpaexample.service.DepartmentService;
 import com.hr.app.jpaexample.service.EmployeeService;
 import java.util.List;
@@ -27,13 +28,13 @@ public class EmployeeController {
 
     // GET /employees/{id}   GET /employees/<dept_id>  dept_id = 10
     @GetMapping("/{id}")
-    public List<Employee> getDepartmentById(@PathVariable Long id) {
+    public List<EmployeeDto>  getDepartmentById(@PathVariable Long id) {
         return employeeService.findEmployeesByDepartmentId(id);
     }
 
     @GetMapping("")
-    public List<Employee> getAllEmployees() {
-        return employeeService.findAll();
+    public List<EmployeeDto> getAllEmployees() {
+        return employeeService.findAllEmployees();
     }
 
 }
