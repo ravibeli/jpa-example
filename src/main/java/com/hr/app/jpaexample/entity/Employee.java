@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 /**
- * @author ravi@gmail.com
+ * @author ravibeli@gmail.com
  * @project jpa-example
  * @created on 06 Mar, 2023 10:23 PM
  */

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import lombok.Data;
 
 /**
- * @author ravi
+ * @author ravibeli@gmail.com
  * @project jpa-example
  * @created on 07 Mar, 2023 12:18 AM
  */

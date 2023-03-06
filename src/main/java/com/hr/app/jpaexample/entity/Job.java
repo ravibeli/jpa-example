@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import lombok.Data;
 
 /**
- * @author ravi
+ * @author ravibeli@gmail.com
  * @project jpa-example
  * @created on 06 Mar, 2023 10:24 PM
  */

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 
 /**
- * @author rav  9:30pm to 11pm : 1.5hours
+ * @author ravibeli@gmail.com
  * @project jpa-example
  * @created on 06 Mar, 2023 10:30 PM
  */
