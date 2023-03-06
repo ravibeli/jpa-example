@@ -22,4 +22,8 @@ public class EmployeeService {
     public List<Employee> findEmployeesByDepartmentId(Long departmentId) {
         return employeeRepository.findAll(EmployeeSpecifications.findAByDepartmentId(departmentId));
     }
+
+    public List<Employee> findAll() {
+        return employeeRepository.findAll();
+    }
 }

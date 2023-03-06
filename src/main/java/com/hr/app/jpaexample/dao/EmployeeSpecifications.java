@@ -5,6 +5,7 @@ import com.hr.app.jpaexample.entity.Employee;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,11 +22,10 @@ import org.springframework.stereotype.Service;
 public class EmployeeSpecifications {
     public static Specification<Employee> findAByDepartmentId(Long departmentId) {
         return new Specification<Employee>() {
-
             @Override
             public Predicate toPredicate(Root<Employee> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                Join<Employee, Department> departmentJoin = root.join("department");
-                return criteriaBuilder.equal(departmentJoin.get("department"), departmentId);
+                Join<Employee, Department> departmentJoin = root.join("department", JoinType.INNER);
+                return criteriaBuilder.equal(departmentJoin.get("departmentId"), departmentId);
             }
         };
     }

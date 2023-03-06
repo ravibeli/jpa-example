@@ -31,5 +31,10 @@ public class EmployeeController {
         return employeeService.findEmployeesByDepartmentId(id);
     }
 
+    @GetMapping("")
+    public List<Employee> getAllEmployees() {
+        return employeeService.findAll();
+    }
+
 }
 
