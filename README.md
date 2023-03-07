@@ -58,4 +58,88 @@
    > GET http://localhost:8080/employees?minSalary=4800&maxSalary=6000
 3. Search all the employees whose salary range between '4800' and '6000' in 'IT' department
    > GET http://localhost:8080/employees?departmentName=IT&minSalary=4800&maxSalary=6000
-   
+
+## Performance and Best Practices of Fetch Types
+
+#### Table scan without: FetchType.LAZY
+
+**Note:** Here without `FetchType.LAZY` unnecessary joins all the tables, and does all columns scan in the SELECT
+
+		select
+			e1_0.employee_id,
+			e1_0.commission_pct,
+			d1_0.department_id,
+			d1_0.department_name,
+			d1_0.location_id,
+			d1_0.manager_id,
+			e1_0.email,
+			e1_0.first_name,
+			e1_0.hire_date,
+			j1_0.job_id,
+			j1_0.max_salary,
+			j1_0.min_salary,
+			j1_0.job_title,
+			e1_0.last_name,
+			m1_0.employee_id,
+			m1_0.commission_pct,
+			d2_0.department_id,
+			d2_0.department_name,
+			d2_0.location_id,
+			d2_0.manager_id,
+			m1_0.email,
+			m1_0.first_name,
+			m1_0.hire_date,
+			j2_0.job_id,
+			j2_0.max_salary,
+			j2_0.min_salary,
+			j2_0.job_title,
+			m1_0.last_name,
+			m1_0.manager_id,
+			m1_0.phone_number,
+			m1_0.salary,
+			e1_0.phone_number,
+			e1_0.salary 
+		from
+			employees e1_0 
+		left join
+			departments d1_0 
+				on d1_0.department_id=e1_0.department_id 
+		left join
+			jobs j1_0 
+				on j1_0.job_id=e1_0.job_id 
+		left join
+			employees m1_0 
+				on m1_0.employee_id=e1_0.manager_id 
+		left join
+			departments d2_0 
+				on d2_0.department_id=m1_0.department_id 
+		left join
+			jobs j2_0 
+				on j2_0.job_id=m1_0.job_id 
+		where
+			e1_0.employee_id=?
+
+#### Table scan with: FetchType.LAZY
+
+**Note:** Here with `FetchType.LAZY` only necessary joins tables will happen, and select the columns whichever are required in the SELECT
+
+    select
+        e1_0.employee_id,
+        e1_0.commission_pct,
+        e1_0.department_id,
+        e1_0.email,
+        e1_0.first_name,
+        e1_0.hire_date,
+        e1_0.job_id,
+        e1_0.last_name,
+        e1_0.manager_id,
+        e1_0.phone_number,
+        e1_0.salary 
+    from
+        employees e1_0 
+    join
+        departments d1_0 
+            on d1_0.department_id=e1_0.department_id 
+    where
+        d1_0.department_name=? 
+        and e1_0.salary between ? and ?
