@@ -17,10 +17,45 @@
 
 ### API Documentation:
 
-| Entities    | API Title                     | Method   | URL                                              |
-|-------------|-------------------------------|----------|--------------------------------------------------|
-| Employee    | Get All Employees Details     | GET      | http://localhost:8080/employees                  |
-| Employee    | Search Employees By Dept ID   | GET      | http://localhost:8080/employees/{departmentId}   |
-| Department  | Get All Departments Details   | GET      | http://localhost:8080/departments                |
-| Department  | Get Department By Dept ID     | GET      | http://localhost:8080/departments/{departmentId} |
+| Entities   | API Title                                                               | Method | URL                                                                             |
+|------------|-------------------------------------------------------------------------|--------|---------------------------------------------------------------------------------|
+| Employee   | Get All Employees Details                                               | GET    | http://localhost:8080/employees                                                 |
+| Employee   | Get Employees By Dept ID                                                | GET    | http://localhost:8080/employees/20                                              |
+| Employee   | Get Employees salary between 4800 and 6000                              | GET    | http://localhost:8080/employees?minSalary=4800&maxSalary=6000                   |
+| Employee   | Get Employees for the given departmentName                              | GET    | http://localhost:8080/employees?departmentName=IT&minSalary=4800&maxSalary=6000 |
+| Employee   | Get Employees for the given departmentName salary between 4800 and 6000 | GET    | http://localhost:8080/employees?minSalary=4800&maxSalary=6000                   |
+| Department | Get All Departments Details                                             | GET    | http://localhost:8080/departments                                               |
+| Department | Get Department By Dept ID                                               | GET    | http://localhost:8080/departments/20                                            |
 
+#### JPA Specification logic to build multiple AND conditions dynamically based on the input given:
+
+```
+    public static Specification<Employee> findByDepartmentNameAndSalaryRange(String departmentName, BigDecimal minSalary, BigDecimal maxSalary) {
+        return new Specification<Employee>() {
+            @Override
+            public Predicate toPredicate(Root<Employee> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+            Join<Employee, Department> departmentJoin = root.join(Employee_.department);
+
+                List<Predicate> predicates = new ArrayList<>();
+                if (nonNull(departmentName)) {
+                    predicates.add(builder.and(builder.equal(departmentJoin
+                            .get(Department_.DEPARTMENT_NAME), departmentName)));
+                }
+                if (nonNull(minSalary) & nonNull(maxSalary)) {
+                    predicates.add(builder.and(builder.between(root.get(Employee_.salary), minSalary, maxSalary)));
+                }
+                return builder.and(predicates.toArray(new Predicate[0]));
+            }
+        };
+    }
+```
+
+#### Above code is JPA Specification logic builds dynamic query that satisfied all the below requirements:
+
+1. Search all the employees from departmentName = IT
+    > GET http://localhost:8080/employees?departmentName=IT
+2. Search all the employees whose salary range between '4800' and '6000' regardless of all the departments
+   > GET http://localhost:8080/employees?minSalary=4800&maxSalary=6000
+3. Search all the employees whose salary range between '4800' and '6000' in 'IT' department
+   > GET http://localhost:8080/employees?departmentName=IT&minSalary=4800&maxSalary=6000
+   
