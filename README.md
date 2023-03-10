@@ -12,8 +12,12 @@
 8. [Install MySQL Workbench 8.0.32](https://dev.mysql.com/downloads/workbench)
 9. [Download and install HR schema](https://github.com/nomemory/hr-schema-mysql/blob/master/hr-schema-mysql.sql)
 10. Git Checkout command: `git clone https://github.com/ravibeli/jpa-example.git`
-11. Build the project using command `gradle clean build`
+11. Build the project using command `gradle clean build` if you have gradle configured in your local
+12. Build the project using command `mvn clean install` if you have maven configured in your local
 12. [Install postman](https://www.postman.com/downloads)
+
+### HR Schema Tables Relationship UML Diagram
+![img.png](img.png)
 
 ### API Documentation:
 
@@ -143,3 +147,32 @@
     where
         d1_0.department_name=? 
         and e1_0.salary between ? and ?
+	
+	
+	
+Open https://github.com/ravibeli/jpa-example.git
+Clink on main brnach
+type your new branch name: HELP-file-changes --> it will automatically creates new branch with name: HELP-file-changes
+
+come to command line in your local machine
+
+got to root folter of jpa-example project that previously checked out
+
+C:/jpa-example> git fetch
+PS C:\POC\JPA\jpa-example> git branch --all
+* logger-aspect
+  main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/logger-aspect
+  remotes/origin/main
+
+git checkout HELP-file-changes 
+git add HELP.md
+git commit -m "Help file changes"
+git push origin HELP-file-changes
+
+Raise: Pull request (PR)
+
+
+
+
