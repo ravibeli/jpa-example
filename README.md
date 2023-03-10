@@ -143,3 +143,32 @@
     where
         d1_0.department_name=? 
         and e1_0.salary between ? and ?
+	
+	
+	
+Open https://github.com/ravibeli/jpa-example.git
+Clink on main brnach
+type your new branch name: HELP-file-changes --> it will automatically creates new branch with name: HELP-file-changes
+
+come to command line in your local machine
+
+got to root folter of jpa-example project that previously checked out
+
+C:/jpa-example> git fetch
+PS C:\POC\JPA\jpa-example> git branch --all
+* logger-aspect
+  main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/logger-aspect
+  remotes/origin/main
+
+git checkout HELP-file-changes 
+git add HELP.md
+git commit -m "Help file changes"
+git push origin HELP-file-changes
+
+Raise: Pull request (PR)
+
+
+
+
