@@ -45,8 +45,7 @@ public class LoggerAspect {
         return result;
     }
 
-    // execution(* com.blueyonder.po..*(..)))
-    @Pointcut("execution(* com.hr.app.jpaexample..*(..)) || execution(* com.blueyonder.rbac..*(..))")
+    @Pointcut("execution(* com.hr.app.jpaexample..*(..))")
     void logForPoAndRbacPackage() {}
 
 }
