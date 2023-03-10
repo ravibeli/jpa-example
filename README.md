@@ -12,7 +12,8 @@
 8. [Install MySQL Workbench 8.0.32](https://dev.mysql.com/downloads/workbench)
 9. [Download and install HR schema](https://github.com/nomemory/hr-schema-mysql/blob/master/hr-schema-mysql.sql)
 10. Git Checkout command: `git clone https://github.com/ravibeli/jpa-example.git`
-11. Build the project using command `gradle clean build`
+11. Build the project using command `gradle clean build` if you have gradle configured in your local
+12. Build the project using command `mvn clean install` if you have maven configured in your local
 12. [Install postman](https://www.postman.com/downloads)
 
 ### API Documentation:
