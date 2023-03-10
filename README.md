@@ -16,6 +16,9 @@
 12. Build the project using command `mvn clean install` if you have maven configured in your local
 12. [Install postman](https://www.postman.com/downloads)
 
+### HR Schema Tables Relationship UML Diagram
+![img.png](img.png)
+
 ### API Documentation:
 
 | Entities   | API Title                                                                   | Method | URL                                                                             |
