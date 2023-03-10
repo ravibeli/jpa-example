@@ -42,7 +42,12 @@ public class EmployeeSpecifications {
         return new Specification<Employee>() {
             @Override
             public Predicate toPredicate(Root<Employee> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-                Join<Employee, Department> departmentJoin = root.join(Employee_.department);
+
+                //Employee table join with Department table
+                Join<Employee, Department> departmentJoin = root.join(Employee_.department, JoinType.INNER);
+
+                //Employee table join with Job table
+                departmentJoin.getParent().join(Employee_.job, JoinType.INNER);
 
                 List<Predicate> predicates = new ArrayList<>();
                 if (nonNull(departmentName)) {
