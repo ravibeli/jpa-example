@@ -38,6 +38,10 @@ dependencies {
 	annotationProcessor "org.mapstruct:mapstruct-processor:1.5.2.Final"
 	// If you are using mapstruct in test code
 	testAnnotationProcessor "org.mapstruct:mapstruct-processor:1.5.2.Final"
+
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+
 }
 
 // attach the generated folder as source for this project
