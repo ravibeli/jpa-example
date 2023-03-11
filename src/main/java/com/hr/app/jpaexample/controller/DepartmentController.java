@@ -4,10 +4,7 @@ import com.hr.app.jpaexample.entity.Department;
 import com.hr.app.jpaexample.service.DepartmentService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author ravibeli@gmail.com
@@ -32,6 +29,13 @@ public class DepartmentController {
     public Department getDepartmentById(@PathVariable Long id) {
         return departmentService.getDepartmentById(id);
     }
+
+  // @GetMapping("/insert")
+   @PostMapping(value="/insert", consumes = "application/json", produces = "application/json")
+    public Department saveDepartment(@RequestBody Department department) {
+        return departmentService.saveDepartment(department);
+    }
+
 
 }
 
