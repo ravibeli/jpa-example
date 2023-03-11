@@ -26,7 +26,7 @@ public class DepartmentService {
         return departmentRepository.findById(id).orElse(null);
     }
 
-    public Department saveDepartment(Department department) {
+    public Department insertrow(Department department) {
         return departmentRepository.save(department);
     }
 

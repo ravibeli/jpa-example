@@ -10,7 +10,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
 /**
  * @author ravibeli@gmail.com
  * @project jpa-example
@@ -38,6 +38,7 @@ public class EmployeeService {
         Specification<Employee> spec = Specification.where(EmployeeSpecifications
                 .findByDepartmentNameAndSalaryRange(departmentName, minSalary, maxSalary));
         List<Employee> employees = employeeRepository.findAll(spec);
+
         return EmployeeMapper.INSTANCE.toEmployeeDtoList(employees);
     }
 }
