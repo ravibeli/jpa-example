@@ -11,7 +11,7 @@ import lombok.Data;
  */
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)//
 public class EmployeeDto {
     private Long id;
     private String firstName;

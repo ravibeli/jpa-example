@@ -5,6 +5,8 @@ import com.hr.app.jpaexample.repository.DepartmentRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @author ravibeli@gmail.com
@@ -26,8 +28,9 @@ public class DepartmentService {
         return departmentRepository.findById(id).orElse(null);
     }
 
+    //@PostMapping
     public Department saveDepartment(Department department) {
-        return departmentRepository.save(department);
+        return departmentRepository.save(department);//saving one object..
     }
 
     public void deleteDepartmentById(Long id) {
