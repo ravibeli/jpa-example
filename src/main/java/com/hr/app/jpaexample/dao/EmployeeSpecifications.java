@@ -37,6 +37,8 @@ public class EmployeeSpecifications {
         };
     }
 
+
+
     public static Specification<Employee> findByDepartmentNameAndSalaryRange(String departmentName, BigDecimal minSalary,
                                                                              BigDecimal maxSalary) {
         return new Specification<Employee>() {

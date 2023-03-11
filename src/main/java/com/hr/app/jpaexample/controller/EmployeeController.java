@@ -34,6 +34,7 @@ public class EmployeeController {
         return employeeService.findEmployeesByDepartmentId(id);
     }
 
+
     @GetMapping("/all")
     public List<EmployeeDto> getAllEmployees() {
         return employeeService.findAllEmployees();
