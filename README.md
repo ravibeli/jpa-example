@@ -154,6 +154,8 @@
 
 #### Case-1: Mapper using below findById methods, fires the multiple SQL SELECT queries and observe the Execution time taken for each of the query, it might create performance issue, if records are huge in each of the table. 
 
+``` **EmployeeController.createEmployee :: Execution time: 158ms** ```
+
 ```
 @Mapping(target = "job", expression = "java(jobRepository.findByJobId(employeeDto.getJobId()))")
 @Mapping(target = "department", expression = "java(departmentRepository.findByDepartmentId(employeeDto.getDepartmentId()))")
@@ -211,6 +213,8 @@ Hibernate:
 ```
 
 #### Case-2: Mapper using getReferenceById(id) default method available in JpaRepository interface, doesn't fire any SELECT queries but it seems to be executing the getReferenceById implicitly but overall execution time taken is relatively very less compared to the Case-1.
+
+``` **EmployeeController.createEmployee :: Execution time: 49ms** ```
 
 ```    
 @Mapping(target = "job", expression = "java(jobRepository.getReferenceById(employeeDto.getJobId()))")
