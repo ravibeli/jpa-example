@@ -158,6 +158,9 @@
 @Mapping(target = "job", expression = "java(jobRepository.findByJobId(employeeDto.getJobId()))")
 @Mapping(target = "department", expression = "java(departmentRepository.findByDepartmentId(employeeDto.getDepartmentId()))")
 @Mapping(target = "manager", expression = "java(employeeRepository.findByManagerId(employeeDto.getManagerId()))")
+Employee toEmployee(EmployeeDto employeeDto, @Context EmployeeRepository employeeRepository,
+                        @Context DepartmentRepository departmentRepository,
+                        @Context JobRepository jobRepository);
 ```
 
 **Application Logs:**
@@ -213,6 +216,9 @@ Hibernate:
 @Mapping(target = "job", expression = "java(jobRepository.getReferenceById(employeeDto.getJobId()))")
 @Mapping(target = "department", expression = "java(departmentRepository.getReferenceById(employeeDto.getDepartmentId()))")
 @Mapping(target = "manager", expression = "java(employeeRepository.getReferenceById(employeeDto.getManagerId()))")
+Employee toEmployee(EmployeeDto employeeDto, @Context EmployeeRepository employeeRepository,
+                        @Context DepartmentRepository departmentRepository,
+                        @Context JobRepository jobRepository);
 ```
 
 **Application Logs:**
