@@ -152,7 +152,7 @@
 ## JPA Anti Pattern of findById 
 **Reference Document**: https://vladmihalcea.com/spring-data-jpa-findbyid
 
-#### Case-1: Mapper using below findById methods
+#### Case-1: Mapper using below findById methods, fires the multiple SQL SELECT queries and observe the Execution time taken for each of the query, it might create performance issue, if records are huge in each of the table. 
 
 ```
 @Mapping(target = "job", expression = "java(jobRepository.findByJobId(employeeDto.getJobId()))")
@@ -210,7 +210,7 @@ Hibernate:
 2023-03-16T00:25:06.758+05:30  INFO 15924 --- [nio-8080-exec-1] c.hr.app.jpaexample.common.LoggerAspect  : Logging AOP: EmployeeController.createEmployee :: Execution time: 158ms
 ```
 
-#### Case-2: Mapper using getReferenceById(id) default method available in JpaRepository interface
+#### Case-2: Mapper using getReferenceById(id) default method available in JpaRepository interface, doesn't fire any SELECT queries but it seems to be executing the getReferenceById implicitly but overall execution time taken is relatively very less compared to the Case-1.
 
 ```    
 @Mapping(target = "job", expression = "java(jobRepository.getReferenceById(employeeDto.getJobId()))")
