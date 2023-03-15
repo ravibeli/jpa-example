@@ -1,8 +1,10 @@
 package com.hr.app.jpaexample.repository;
 
 import com.hr.app.jpaexample.entity.Employee;
+import org.mapstruct.Mapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,10 +12,10 @@ import org.springframework.stereotype.Repository;
  * @project jpa-example
  * @created on 06 Mar, 2023 10:25 PM
  */
-
 @Repository
 public interface EmployeeRepository extends JpaSpecificationExecutor<Employee>,
         JpaRepository<Employee, Long> {
-
+    @Query("select e from Employee e where e.id=:managerId")
+    Employee findByManagerId(Long managerId);
 }
 

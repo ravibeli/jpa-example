@@ -2,6 +2,7 @@ package com.hr.app.jpaexample.repository;
 
 import com.hr.app.jpaexample.entity.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,9 +10,9 @@ import org.springframework.stereotype.Repository;
  * @project jpa-example
  * @created on 06 Mar, 2023 10:19 PM
  */
-
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
-
+    @Query("select d from Department d where d.id=:departmentId")
+    Department findByDepartmentId(Long departmentId);
 }
 

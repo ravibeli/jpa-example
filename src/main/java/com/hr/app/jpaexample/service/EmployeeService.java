@@ -3,7 +3,9 @@ package com.hr.app.jpaexample.service;
 import com.hr.app.jpaexample.dao.EmployeeSpecifications;
 import com.hr.app.jpaexample.entity.Employee;
 import com.hr.app.jpaexample.mappers.EmployeeMapper;
+import com.hr.app.jpaexample.repository.DepartmentRepository;
 import com.hr.app.jpaexample.repository.EmployeeRepository;
+import com.hr.app.jpaexample.repository.JobRepository;
 import com.hr.app.jpaexample.responses.EmployeeDto;
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,6 +25,12 @@ public class EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    @Autowired
+    DepartmentRepository departmentRepository;
+
+    @Autowired
+    JobRepository jobRepository;
+
     public List<EmployeeDto> findEmployeesByDepartmentId(Long departmentId) {
         List<Employee> employees = employeeRepository.findAll(EmployeeSpecifications.findAByDepartmentId(departmentId));
         return EmployeeMapper.INSTANCE.toEmployeeDtoList(employees);
@@ -39,5 +47,12 @@ public class EmployeeService {
                 .findByDepartmentNameAndSalaryRange(departmentName, minSalary, maxSalary));
         List<Employee> employees = employeeRepository.findAll(spec);
         return EmployeeMapper.INSTANCE.toEmployeeDtoList(employees);
+    }
+
+    public EmployeeDto createEmployee(EmployeeDto employeeDto) {
+        Employee employee = EmployeeMapper.INSTANCE.toEmployee(employeeDto, employeeRepository,
+                departmentRepository, jobRepository);
+        Employee employeeCreated = employeeRepository.save(employee);
+        return EmployeeMapper.INSTANCE.toEmployeeDto(employeeCreated);
     }
 }

@@ -149,30 +149,78 @@
         and e1_0.salary between ? and ?
 	
 	
-	
-Open https://github.com/ravibeli/jpa-example.git
-Clink on main brnach
-type your new branch name: HELP-file-changes --> it will automatically creates new branch with name: HELP-file-changes
+## JPA Anti Pattern of findById 
+**Reference Document**: https://vladmihalcea.com/spring-data-jpa-findbyid
 
-come to command line in your local machine
+#### Case-1: Mapper using below findById methods
 
-got to root folter of jpa-example project that previously checked out
+```
+@Mapping(target = "job", expression = "java(jobRepository.findByJobId(employeeDto.getJobId()))")
+@Mapping(target = "department", expression = "java(departmentRepository.findByDepartmentId(employeeDto.getDepartmentId()))")
+@Mapping(target = "manager", expression = "java(employeeRepository.findByManagerId(employeeDto.getManagerId()))")
+```
 
-C:/jpa-example> git fetch
-PS C:\POC\JPA\jpa-example> git branch --all
-* logger-aspect
-  main
-  remotes/origin/HEAD -> origin/main
-  remotes/origin/logger-aspect
-  remotes/origin/main
+**Application Logs:**
 
-git checkout HELP-file-changes 
-git add HELP.md
-git commit -m "Help file changes"
-git push origin HELP-file-changes
+```
+2023-03-16T00:25:06.446+05:30  INFO 15924 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+Hibernate: 
+    select
+        j1_0.job_id,
+        j1_0.max_salary,
+        j1_0.min_salary,
+        j1_0.job_title 
+    from
+        jobs j1_0 
+    where
+        j1_0.job_id=?
+2023-03-16T00:25:06.731+05:30  INFO 15924 --- [nio-8080-exec-1] c.hr.app.jpaexample.common.LoggerAspect  : Logging AOP: JobRepository.findByJobId :: Execution time: 127ms
+Hibernate: 
+    select
+        d1_0.department_id,
+        d1_0.department_name,
+        d1_0.location_id,
+        d1_0.manager_id 
+    from
+        departments d1_0 
+    where
+        d1_0.department_id=?
+2023-03-16T00:25:06.740+05:30  INFO 15924 --- [nio-8080-exec-1] c.hr.app.jpaexample.common.LoggerAspect  : Logging AOP: DepartmentRepository.findByDepartmentId :: Execution time: 9ms
+Hibernate: 
+    select
+        e1_0.employee_id,
+        e1_0.commission_pct,
+        e1_0.department_id,
+        e1_0.email,
+        e1_0.first_name,
+        e1_0.hire_date,
+        e1_0.job_id,
+        e1_0.last_name,
+        e1_0.manager_id,
+        e1_0.phone_number,
+        e1_0.salary 
+    from
+        employees e1_0 
+    where
+        e1_0.employee_id=?
+2023-03-16T00:25:06.758+05:30  INFO 15924 --- [nio-8080-exec-1] c.hr.app.jpaexample.common.LoggerAspect  : Logging AOP: EmployeeRepository.findByManagerId :: Execution time: 17ms
+2023-03-16T00:25:06.758+05:30  INFO 15924 --- [nio-8080-exec-1] c.hr.app.jpaexample.common.LoggerAspect  : Logging AOP: EmployeeController.createEmployee :: Execution time: 158ms
+```
 
-Raise: Pull request (PR)
+#### Case-2: Mapper using getReferenceById(id) default method available in JpaRepository interface
 
+```    
+@Mapping(target = "job", expression = "java(jobRepository.getReferenceById(employeeDto.getJobId()))")
+@Mapping(target = "department", expression = "java(departmentRepository.getReferenceById(employeeDto.getDepartmentId()))")
+@Mapping(target = "manager", expression = "java(employeeRepository.getReferenceById(employeeDto.getManagerId()))")
+```
 
-
+**Application Logs:**
+```
+2023-03-16T00:36:26.032+05:30  INFO 53336 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-03-16T00:36:26.206+05:30  INFO 53336 --- [nio-8080-exec-1] c.hr.app.jpaexample.common.LoggerAspect  : Logging AOP: JpaRepository.getReferenceById :: Execution time: 35ms
+2023-03-16T00:36:26.211+05:30  INFO 53336 --- [nio-8080-exec-1] c.hr.app.jpaexample.common.LoggerAspect  : Logging AOP: JpaRepository.getReferenceById :: Execution time: 3ms
+2023-03-16T00:36:26.216+05:30  INFO 53336 --- [nio-8080-exec-1] c.hr.app.jpaexample.common.LoggerAspect  : Logging AOP: JpaRepository.getReferenceById :: Execution time: 3ms
+2023-03-16T00:36:26.216+05:30  INFO 53336 --- [nio-8080-exec-1] c.hr.app.jpaexample.common.LoggerAspect  : Logging AOP: EmployeeController.createEmployee :: Execution time: 49ms
+```
 
