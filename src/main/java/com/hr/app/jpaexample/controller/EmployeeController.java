@@ -5,6 +5,7 @@ import com.hr.app.jpaexample.mappers.EmployeeMapper;
 import com.hr.app.jpaexample.repository.DepartmentRepository;
 import com.hr.app.jpaexample.repository.EmployeeRepository;
 import com.hr.app.jpaexample.repository.JobRepository;
+import com.hr.app.jpaexample.requests.EmployeeRequest;
 import com.hr.app.jpaexample.responses.EmployeeDto;
 import com.hr.app.jpaexample.service.EmployeeService;
 import java.math.BigDecimal;

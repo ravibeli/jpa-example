@@ -2,6 +2,7 @@ package com.hr.app.jpaexample.service;
 
 import com.hr.app.jpaexample.dao.EmployeeSpecifications;
 import com.hr.app.jpaexample.entity.Employee;
+import com.hr.app.jpaexample.i18n.exceptions.ApplicationException;
 import com.hr.app.jpaexample.mappers.EmployeeMapper;
 import com.hr.app.jpaexample.repository.DepartmentRepository;
 import com.hr.app.jpaexample.repository.EmployeeRepository;
@@ -9,9 +10,13 @@ import com.hr.app.jpaexample.repository.JobRepository;
 import com.hr.app.jpaexample.responses.EmployeeDto;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import static com.hr.app.jpaexample.constants.Constants.ENTITY_ALREADY_EXISTS;
 
 /**
  * @author ravibeli@gmail.com
@@ -50,6 +55,14 @@ public class EmployeeService {
     }
 
     public EmployeeDto createEmployee(EmployeeDto employeeDto) {
+
+        //Throw user defined ApplicationException with proper error code
+        Optional<Employee> employeeOptional = employeeRepository.findById(employeeDto.getId());
+
+        if (employeeOptional.isPresent()) {
+            throw new ApplicationException(HttpStatus.CONFLICT, ENTITY_ALREADY_EXISTS, employeeDto.getId());
+        }
+
         Employee employee = EmployeeMapper.INSTANCE.toEmployee(employeeDto, employeeRepository,
                 departmentRepository, jobRepository);
         Employee employeeCreated = employeeRepository.save(employee);
