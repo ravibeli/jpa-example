@@ -20,6 +20,7 @@ repositories {
 
 ext {
 	mapstruct_version = "1.5.3.Final"
+	swagger_annotations_version = "2.2.1"
 }
 
 dependencies {
@@ -41,7 +42,10 @@ dependencies {
 	annotationProcessor "org.mapstruct:mapstruct-processor:$mapstruct_version"
 	// If you are using mapstruct in test code
 	testAnnotationProcessor "org.mapstruct:mapstruct-processor:$mapstruct_version"
+	//API Documentation
+	annotationProcessor "io.swagger.core.v3:swagger-annotations:$swagger_annotations_version"
 
+	implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 
 }
