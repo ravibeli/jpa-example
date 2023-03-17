@@ -8,6 +8,7 @@ import com.hr.app.jpaexample.repository.EmployeeRepository;
 import com.hr.app.jpaexample.repository.JobRepository;
 import com.hr.app.jpaexample.responses.EmployeeDto;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -41,14 +42,14 @@ public class EmployeeService {
         return EmployeeMapper.INSTANCE.toEmployeeDtoList(employees);
     }
 
-    public List<EmployeeDto> findByDepartmentAndSalaryRange(String departmentName, BigDecimal minSalary,
-                                                            BigDecimal maxSalary) {
+    public List<EmployeeDto> findEmployeesBySearch(String departmentName, BigDecimal minSalary,
+                                                   BigDecimal maxSalary, String nameStartsWith,
+                                                   LocalDate hireDateFrom, LocalDate hireDateTo) {
         Specification<Employee> spec = Specification.where(EmployeeSpecifications
-                .findByDepartmentNameAndSalaryRange(departmentName, minSalary, maxSalary));
+                .findEmployeesBySearch(departmentName, minSalary, maxSalary, nameStartsWith,hireDateFrom, hireDateTo));
         List<Employee> employees = employeeRepository.findAll(spec);
         return EmployeeMapper.INSTANCE.toEmployeeDtoList(employees);
     }
-
     public EmployeeDto createEmployee(EmployeeDto employeeDto) {
         Employee employee = EmployeeMapper.INSTANCE.toEmployee(employeeDto, employeeRepository,
                 departmentRepository, jobRepository);
