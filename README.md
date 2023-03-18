@@ -1,6 +1,7 @@
 # Simple Spring Boot 3.0.4 JPA Example
 
-### Instruction
+### Instruction (Click on the text given here, it takes you to download links)
+
 
 1. [Install JDK 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
 2. [Install Gradle 7.6.1](https://gradle.org/next-steps/?version=7.6.1&format=bin)
