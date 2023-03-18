@@ -19,6 +19,9 @@
 ### HR Schema Tables Relationship UML Diagram
 ![img.png](img.png)
 
+### JPA Example Project Simple Architecture
+![img_1.png](img_1.png)
+
 ### API Documentation:
 
 | Entities   | API Title                                                                   | Method | URL                                                                             |
