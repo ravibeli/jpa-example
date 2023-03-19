@@ -17,7 +17,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
-import static com.hr.app.jpaexample.constants.Constants.ENTITY_ALREADY_EXISTS;
+
+import static com.hr.app.jpaexample.constants.Constants.*;
 
 /**
  * @author ravibeli@gmail.com
@@ -68,5 +69,34 @@ public class EmployeeService {
                 departmentRepository, jobRepository);
         Employee employeeCreated = employeeRepository.save(employee);
         return EmployeeMapper.INSTANCE.toEmployeeDto(employeeCreated);
+    }
+
+    public EmployeeDto updateEmployee(EmployeeDto employeeDto) {
+
+        //Throw user defined ApplicationException with proper error code
+        Optional<Employee> existingEmployeeOptional  = employeeRepository.findById(employeeDto.getId());
+
+        if (!existingEmployeeOptional.isPresent()) {
+            throw new ApplicationException(HttpStatus.NOT_FOUND, ENTITY_NOT_FOUND, employeeDto.getId());
+        }
+
+        Employee updatedEmployee = EmployeeMapper.INSTANCE.toEmployee(employeeDto, employeeRepository,
+                departmentRepository, jobRepository);
+        updatedEmployee.setId(existingEmployeeOptional.get().getId());
+        Employee employeeUpdated = employeeRepository.save(updatedEmployee);
+        return EmployeeMapper.INSTANCE.toEmployeeDto(employeeUpdated);
+    }
+
+    public void deleteEmployee(Long id) {
+
+        // check if employee with the given id exists
+        Optional<Employee> existingEmployeeOptional = employeeRepository.findById(id);
+
+        if (!existingEmployeeOptional.isPresent()) {
+            throw new ApplicationException(HttpStatus.NOT_FOUND, ENTITY_NOT_FOUND, id);
+        }
+
+        employeeRepository.deleteById(id);
+        throw new ApplicationException(HttpStatus.OK, ENTITY_DELETED_SUCCESSFULLY, id);
     }
 }

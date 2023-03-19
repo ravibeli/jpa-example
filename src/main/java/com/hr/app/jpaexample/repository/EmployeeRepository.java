@@ -1,6 +1,7 @@
 package com.hr.app.jpaexample.repository;
 
 import com.hr.app.jpaexample.entity.Employee;
+import com.hr.app.jpaexample.responses.EmployeeDto;
 import org.mapstruct.Mapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -17,5 +18,6 @@ public interface EmployeeRepository extends JpaSpecificationExecutor<Employee>,
         JpaRepository<Employee, Long> {
     @Query("select e from Employee e where e.id=:managerId")
     Employee findByManagerId(Long managerId);
+
 }
 

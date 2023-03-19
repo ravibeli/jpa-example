@@ -9,15 +9,10 @@ import com.hr.app.jpaexample.requests.EmployeeRequest;
 import com.hr.app.jpaexample.responses.EmployeeDto;
 import com.hr.app.jpaexample.service.EmployeeService;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author ravibeli@gmail.com
@@ -52,15 +47,29 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeDto>  findEmployeesByDepartmentId(@RequestParam(required = false, name = "departmentName") String departmentName,
-                                                          @RequestParam(required = false, name = "minSalary") BigDecimal minSalary,
-                                                          @RequestParam(required = false, name = "maxSalary") BigDecimal maxSalary) {
-        return employeeService.findByDepartmentAndSalaryRange(departmentName, minSalary, maxSalary);
+    public List<EmployeeDto>  findEmployeesBySearch(@RequestParam(required = false, name = "departmentName") String departmentName,
+                                                    @RequestParam(required = false, name = "minSalary") BigDecimal minSalary,
+                                                    @RequestParam(required = false, name = "maxSalary") BigDecimal maxSalary,
+                                                    @RequestParam(required = false, name = "nameStartsWith") String nameStartsWith,
+                                                    @RequestParam(required = false, name = "hireDateFrom") LocalDate hireDateFrom,
+                                                    @RequestParam(required = false, name = "hireDateTo") LocalDate hireDateTo) {
+        return employeeService.findEmployeesBySearch(departmentName, minSalary, maxSalary,nameStartsWith,hireDateFrom,hireDateTo);
     }
 
     @PostMapping
     public EmployeeDto createEmployee(@RequestBody EmployeeDto employeeDto) {
         return employeeService.createEmployee(employeeDto);
     }
+
+    @PutMapping("/{id}")
+    public EmployeeDto updateEmployee(@PathVariable Long id, @RequestBody EmployeeDto employeeDto) {
+        return employeeService.updateEmployee(employeeDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteEmployee(@PathVariable Long id) {
+        employeeService.deleteEmployee(id);
+    }
+
 }
 
