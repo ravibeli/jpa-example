@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,6 +26,8 @@ import java.util.Optional;
 import static com.hr.app.jpaexample.config.CacheConfig.EMPLOYEES_CACHE;
 import static com.hr.app.jpaexample.config.CacheConfig.EMPLOYEES_CACHE_MANAGER;
 import static com.hr.app.jpaexample.constants.Constants.ENTITY_ALREADY_EXISTS;
+import static com.hr.app.jpaexample.constants.Constants.ENTITY_DELETED_SUCCESSFULLY;
+import static com.hr.app.jpaexample.constants.Constants.ENTITY_NOT_FOUND;
 
 /**
  * @author ravibeli@gmail.com
@@ -59,10 +62,11 @@ public class EmployeeService {
         return EmployeeMapper.INSTANCE.toEmployeeDtoList(employees);
     }
 
-    public List<EmployeeDto> findByDepartmentAndSalaryRange(String departmentName, BigDecimal minSalary,
-                                                            BigDecimal maxSalary) {
+    public List<EmployeeDto> findEmployeesBySearch(String departmentName, BigDecimal minSalary,
+                                                   BigDecimal maxSalary, String nameStartsWith,
+                                                   LocalDate hireDateFrom, LocalDate hireDateTo) {
         Specification<Employee> spec = Specification.where(EmployeeSpecifications
-                .findByDepartmentNameAndSalaryRange(departmentName, minSalary, maxSalary));
+                .findEmployeesBySearch(departmentName, minSalary, maxSalary, nameStartsWith,hireDateFrom, hireDateTo));
         List<Employee> employees = employeeRepository.findAll(spec);
         return EmployeeMapper.INSTANCE.toEmployeeDtoList(employees);
     }
@@ -71,7 +75,7 @@ public class EmployeeService {
     @Cacheable(value = "employees", key = "#departmentName", cacheManager = EMPLOYEES_CACHE_MANAGER)
     public List<EmployeeDto> findByDepartmentName(String departmentName) {
         Specification<Employee> spec = Specification.where(EmployeeSpecifications
-                .findByDepartmentNameAndSalaryRange(departmentName, null, null));
+                .findEmployeesBySearch(departmentName,null,null,null,null,null));
         List<Employee> employees = employeeRepository.findAll(spec);
         return EmployeeMapper.INSTANCE.toEmployeeDtoList(employees);
     }
@@ -118,5 +122,34 @@ public class EmployeeService {
                 departmentRepository, jobRepository);
         Employee employeeCreated = employeeRepository.save(employee);
         return EmployeeMapper.INSTANCE.toEmployeeDto(employeeCreated);
+    }
+
+    public EmployeeDto updateEmployee(EmployeeDto employeeDto) {
+
+        //Throw user defined ApplicationException with proper error code
+        Optional<Employee> existingEmployeeOptional  = employeeRepository.findById(employeeDto.getId());
+
+        if (!existingEmployeeOptional.isPresent()) {
+            throw new ApplicationException(HttpStatus.NOT_FOUND, ENTITY_NOT_FOUND, employeeDto.getId());
+        }
+
+        Employee updatedEmployee = EmployeeMapper.INSTANCE.toEmployee(employeeDto, employeeRepository,
+                departmentRepository, jobRepository);
+        updatedEmployee.setId(existingEmployeeOptional.get().getId());
+        Employee employeeUpdated = employeeRepository.save(updatedEmployee);
+        return EmployeeMapper.INSTANCE.toEmployeeDto(employeeUpdated);
+    }
+
+    public void deleteEmployee(Long id) {
+
+        // check if employee with the given id exists
+        Optional<Employee> existingEmployeeOptional = employeeRepository.findById(id);
+
+        if (!existingEmployeeOptional.isPresent()) {
+            throw new ApplicationException(HttpStatus.NOT_FOUND, ENTITY_NOT_FOUND, id);
+        }
+
+        employeeRepository.deleteById(id);
+        throw new ApplicationException(HttpStatus.OK, ENTITY_DELETED_SUCCESSFULLY, id);
     }
 }

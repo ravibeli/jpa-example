@@ -13,6 +13,7 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,17 +38,13 @@ public class EmployeeSpecifications {
         };
     }
 
-    public static Specification<Employee> findByDepartmentNameAndSalaryRange(String departmentName, BigDecimal minSalary,
-                                                                             BigDecimal maxSalary) {
+    public static Specification<Employee> findEmployeesBySearch(String departmentName, BigDecimal minSalary, BigDecimal maxSalary,
+                                                                String nameStartsWith,
+                                                                LocalDate hireDateFrom, LocalDate hireDateTo) {
         return new Specification<Employee>() {
             @Override
             public Predicate toPredicate(Root<Employee> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-
-                //Employee table join with Department table
-                Join<Employee, Department> departmentJoin = root.join(Employee_.department, JoinType.INNER);
-
-                //Employee table join with Job table
-                departmentJoin.getParent().join(Employee_.job, JoinType.INNER);
+                Join<Employee, Department> departmentJoin = root.join(Employee_.department);
 
                 List<Predicate> predicates = new ArrayList<>();
                 if (nonNull(departmentName)) {
@@ -56,6 +53,12 @@ public class EmployeeSpecifications {
                 }
                 if (nonNull(minSalary) & nonNull(maxSalary)) {
                     predicates.add(builder.and(builder.between(root.get(Employee_.salary), minSalary, maxSalary)));
+                }
+                if (nameStartsWith != null) {
+                    predicates.add(builder.like(root.get(Employee_.firstName), nameStartsWith + "%"));
+                }
+                if (hireDateFrom != null & hireDateTo != null) {
+                    predicates.add(builder.and(builder.between(root.get(Employee_.hireDate), hireDateFrom, hireDateTo)));
                 }
                 return builder.and(predicates.toArray(new Predicate[0]));
             }

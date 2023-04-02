@@ -8,4 +8,7 @@ package com.hr.app.jpaexample.constants;
 
 public final class Constants {
     public static String ENTITY_ALREADY_EXISTS = "entity.with.id.exists";
+    public static String ENTITY_NOT_FOUND = "entity.with.id.notFound";
+    public static String ENTITY_DELETED_SUCCESSFULLY = "entity.with.id.deletedSuccessfully";
+
 }
