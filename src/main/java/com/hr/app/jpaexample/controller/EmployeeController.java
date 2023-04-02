@@ -52,10 +52,27 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeDto>  findEmployeesByDepartmentId(@RequestParam(required = false, name = "departmentName") String departmentName,
+    public List<EmployeeDto>  findEmployeesByDepartmentName(@RequestParam(required = false, name = "departmentName") String departmentName,
                                                           @RequestParam(required = false, name = "minSalary") BigDecimal minSalary,
                                                           @RequestParam(required = false, name = "maxSalary") BigDecimal maxSalary) {
         return employeeService.findByDepartmentAndSalaryRange(departmentName, minSalary, maxSalary);
+    }
+
+    @GetMapping("/{departmentName}")
+    public List<EmployeeDto>  findEmployeesByDepartmentName(@PathVariable(required = false, name = "departmentName") String departmentName) {
+        return employeeService.findByDepartmentName(departmentName);
+    }
+
+    @GetMapping("/clearCache/{departmentName}")
+    public String clearCacheEmployeesByDepartmentName(@PathVariable(required = false, name = "departmentName") String departmentName) {
+        employeeService.clearCacheValuesBySubjectId(departmentName);
+        return "employees of " + departmentName + " cache cleared";
+    }
+
+    @GetMapping("/clearCache")
+    public String clearCacheAllEmployees() {
+        employeeService.clearAllCacheValues();
+        return "All employees cache cleared";
     }
 
     @PostMapping
